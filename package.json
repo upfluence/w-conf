@@ -1,6 +1,6 @@
 {
   "name": "@upfluence/w-conf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared configuration for web projects",
   "author": "Upfluence <dev@upfluence.com>",
   "repository": "https://github.com/upfluence/w-conf",
