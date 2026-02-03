@@ -1,0 +1,27 @@
+{
+  "name": "@upfluence/w-conf",
+  "version": "0.0.1",
+  "description": "Shared configuration for web projects",
+  "author": "Upfluence <dev@upfluence.com>",
+  "keywords": [
+    "upfluence",
+    "configuration",
+    "prettier",
+    "shared-config"
+  ],
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "prettier": "^3.6.2"
+  },
+  "peerDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "prettier": "^3.6.2"
+  },
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    "./prettier": "./src/prettier/index.mjs"
+  }
+}
