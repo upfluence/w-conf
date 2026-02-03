@@ -3,12 +3,17 @@
   "version": "0.0.1",
   "description": "Shared configuration for web projects",
   "author": "Upfluence <dev@upfluence.com>",
+  "repository": "https://github.com/upfluence/w-conf",
   "keywords": [
     "upfluence",
     "configuration",
     "prettier",
     "shared-config"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "prettier": "^3.6.2"

@@ -1,0 +1,40 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+  pull_request:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NODE_VERSION: '20'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    name: Release Package
+    runs-on: ubuntu-24.04
+    if: contains(github.ref, 'refs/tags/v')
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '${{ env.NODE_VERSION }}'
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Publish
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" >> ~/.npmrc
+          npm publish --access public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
