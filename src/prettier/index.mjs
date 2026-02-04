@@ -16,7 +16,7 @@ function buildSortImportConfig(globPatterns, packages) {
       plugins: ['@trivago/prettier-plugin-sort-imports'],
       importOrderParserPlugins: ['decorators-legacy', 'typescript'],
       importOrder: [
-        '^@(ember|ember-data|embroider|glimmer)/(.*)$',
+        '^(@ember|@ember-data|@embroider|@glimmer|ember-data)/(.*)$',
         '<THIRD_PARTY_MODULES>',
         ...packages.map((pkg) => `^(${pkg}.*)$`),
         '^[./]'
