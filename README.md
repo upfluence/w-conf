@@ -20,7 +20,7 @@ The Prettier configuration exports a `buildConfiguration` function that you can 
 
 ```ts
 interface PrettierConfigurationOptions {
-  sortImports?: {
+  sortImport?: {
     enabled?: boolean; // default: true
     globPatterns?: string[]; // default: ['**/*.(js|ts)']
     packages?: string[]; // default: []
@@ -42,7 +42,7 @@ export default buildConfiguration();
 import { buildConfiguration } from '@upfluence/w-conf/prettier';
 
 export default buildConfiguration({
-  sortImports: {
+  sortImport: {
     globPatterns: ['packages/(settings-web|affiliates-web)/**/*.(ts)'],
     packages: ['@upfluence/settings-web', '@upfluence/affiliates-web']
   }
@@ -55,7 +55,7 @@ export default buildConfiguration({
 import { buildConfiguration } from '@upfluence/w-conf/prettier';
 
 export default buildConfiguration({
-  sortImports: {
+  sortImport: {
     packages: ['@upfluence/my-local-package']
   }
 });
