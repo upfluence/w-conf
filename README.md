@@ -78,7 +78,7 @@ export default {
 
 ### ESLint
 
-A shared flat ESLint config (ESLint 10) for Upfluence Ember apps/addons.
+A shared flat ESLint config (ESLint ≥ 10) for Upfluence Ember apps/addons.
 It includes:
 
 - `eslint:recommended`

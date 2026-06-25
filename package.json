@@ -12,6 +12,7 @@
     "configuration",
     "prettier",
     "eslint",
+    "eslintconfig",
     "shared-config"
   ],
   "publishConfig": {
@@ -19,7 +20,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=22.6.0"
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
@@ -38,7 +39,7 @@
   },
   "peerDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "eslint": "^10.5.0",
+    "eslint": ">=10.5.0",
     "prettier": "^3.6.2"
   },
   "type": "module",
@@ -47,6 +48,6 @@
   ],
   "exports": {
     "./prettier": "./src/prettier/index.mjs",
-    "./eslint": "./src/eslint/index.ts"
+    "./eslint": "./src/eslint/index.mjs"
   }
 }

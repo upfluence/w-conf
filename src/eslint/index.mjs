@@ -1,3 +1,4 @@
+// @ts-check
 /*
  * Shared ESLint flat configuration for Upfluence web projects.
  *
@@ -8,18 +9,13 @@
  *   - ESLint   -> code quality / correctness (this file)
  *   - Prettier -> formatting (`@upfluence/w-conf/prettier`)
  *
- * Authored in pure TypeScript and exported directly. No compilation or transformation
- * is needed because all consuming Upfluence codebases are TS-ready.
- *
  * Usage in a consuming repo (`eslint.config.mjs`):
  *
  *   import upfluence from '@upfluence/w-conf/eslint';
  *   export default upfluence;
  */
 import js from '@eslint/js';
-import type { Linter } from 'eslint';
 import eslintConfigPrettierPlaceLast from 'eslint-config-prettier';
-// @ts-expect-error - eslint plugins rarely ship types
 import ember from 'eslint-plugin-ember/recommended';
 import n from 'eslint-plugin-n';
 import qunit from 'eslint-plugin-qunit';
@@ -27,16 +23,33 @@ import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-type ESLintConfigArgs = Parameters<typeof defineConfig>;
-export type ESLintConfigElement = ESLintConfigArgs[number];
+/**
+ * A single ESLint flat-config element accepted by {@link defineConfig}.
+ * Equivalent to `Parameters<typeof defineConfig>[number]`.
+ *
+ * @typedef {Parameters<typeof defineConfig>[number]} ESLintConfigElement
+ */
+
+/**
+ * Options accepted by {@link buildConfiguration}.
+ *
+ * @typedef {Object} ESLintConfigOptions
+ * @property {string[]} [ignores]
+ *   Custom ignore patterns. When provided, replaces {@link DEFAULT_IGNORES} entirely.
+ *   Pass an empty array to disable all default ignores.
+ * @property {string[]} [testFiles]
+ *   Glob patterns for QUnit test files. Defaults to {@link DEFAULT_TEST_FILES}.
+ * @property {string[]} [nodeFiles]
+ *   Glob patterns for Node.js / config-file overrides. Defaults to {@link DEFAULT_NODE_FILES}.
+ */
 
 /*
  * Ember "classic"-era rules that every Upfluence repo already disables today.
  * They are enabled by `ember.configs.base` but kept OFF here so adoption of the
- * shared config introduces no new violations. Re-enabling any of these is a deliberate
- *  modernization step, not core work.
+ * shared config introduces no new violations. Re-enabling any of these is a
+ * deliberate modernization step, not core work.
  */
-export const emberCompatibilityDisables: Partial<Linter.RulesRecord> = {
+export const emberCompatibilityDisables = {
   'ember/avoid-leaking-state-in-ember-objects': 'off',
   'ember/classic-decorator-no-classic-methods': 'off',
   'ember/closure-actions': 'off',
@@ -63,7 +76,7 @@ export const emberCompatibilityDisables: Partial<Linter.RulesRecord> = {
  * Normalizes the override that was inert in 6 repos (declared `plugins: ['node']`
  * but never extended the recommended set). Repos can pass their own list.
  */
-export const DEFAULT_NODE_FILES: string[] = [
+export const DEFAULT_NODE_FILES = [
   '**/*.cjs',
   '.eslintrc.js',
   '.prettierrc.js',
@@ -82,20 +95,19 @@ export const DEFAULT_NODE_FILES: string[] = [
 ];
 
 /* Default test globs (qunit). Covers js and ts test files. */
-export const DEFAULT_TEST_FILES: string[] = ['tests/**/*-test.{js,ts}'];
+export const DEFAULT_TEST_FILES = ['tests/**/*-test.{js,ts}'];
 
 /* --- Building blocks (named exports for composition) --- */
 
 /* `eslint:recommended` core. */
-export const core: ESLintConfigElement[] = [js.configs.recommended];
+export const core = [js.configs.recommended];
 
 /*
- * Ember recommended with the compatibility disables.
- */
-export const emberConfig: ESLintConfigElement[] = [
+ * Ember recommended with the compatibility disables. */
+export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
   ember.configs.base,
   { name: 'upfluence/ember-compatibility-disables', rules: emberCompatibilityDisables }
-];
+]);
 
 /*
  * typescript-eslint recommended, scoped to TS files.
@@ -103,7 +115,7 @@ export const emberConfig: ESLintConfigElement[] = [
  * (`recommendedTypeChecked`) needs a per-repo tsconfig/projectService and is
  * deferred to a later phase.
  */
-export const typescript: ESLintConfigElement[] = [
+export const typescript = [
   {
     files: ['**/*.ts'],
     languageOptions: {
@@ -121,7 +133,7 @@ export const typescript: ESLintConfigElement[] = [
  * Uses `tseslint.parser` instead of Babel. It is completely capable of parsing
  * standard JS files containing decorators, allowing us to drop Babel!
  */
-export const javascript: ESLintConfigElement[] = [
+export const javascript = [
   {
     files: ['**/*.js'],
     languageOptions: {
@@ -137,8 +149,11 @@ export const javascript: ESLintConfigElement[] = [
   }
 ];
 
-/* QUnit on test files. */
-export const qunitTests = (files: string[] = DEFAULT_TEST_FILES): ESLintConfigElement[] => [
+/**
+ * @param {string[]} [files=DEFAULT_TEST_FILES]
+ * @returns {ESLintConfigElement[]}
+ */
+export const qunitTests = (files = DEFAULT_TEST_FILES) => [
   {
     files,
     plugins: { qunit },
@@ -146,8 +161,11 @@ export const qunitTests = (files: string[] = DEFAULT_TEST_FILES): ESLintConfigEl
   }
 ];
 
-/* Node/config files: CJS, node globals, eslint-plugin-n. */
-export const nodeFiles = (files: string[] = DEFAULT_NODE_FILES): ESLintConfigElement[] => [
+/**
+ * @param {string[]} [files=DEFAULT_NODE_FILES]
+ * @returns {ESLintConfigElement[]}
+ */
+export const nodeFiles = (files = DEFAULT_NODE_FILES) => [
   {
     files,
     plugins: { n },
@@ -179,20 +197,65 @@ export const DEFAULT_IGNORES = [
       'package.json.ember-try'
     ]
   }
-] as ESLintConfigElement[];
+];
 
-export interface ESLintConfigOptions {
-  ignores?: string[];
-  testFiles?: string[];
-  nodeFiles?: string[];
-}
-
-/*
- * Create extensible and parameterized flat configuration for Upfluence web projects.
+/**
+ * Builds a complete ESLint flat-config array for an Upfluence web project.
+ *
+ * Assembles the standard rule set in the following order:
+ *
+ *  1. Ignore patterns — custom `options.ignores` or {@link DEFAULT_IGNORES}
+ *  2. Linter meta-options (`reportUnusedDisableDirectives`, `reportUnusedInlineConfigs`)
+ *  3. `eslint:recommended` core rules — {@link core}
+ *  4. `eslint-plugin-ember` recommended + {@link emberCompatibilityDisables} — {@link emberConfig}
+ *  5. JavaScript files (TypeScript parser, browser globals) — {@link javascript}
+ *  6. TypeScript files (`typescript-eslint` recommended, untyped) — {@link typescript}
+ *  7. QUnit test files (`eslint-plugin-qunit`) — {@link qunitTests}
+ *  8. Node.js / config files (`eslint-plugin-n`, node globals) — {@link nodeFiles}
+ *  9. Any additional flat-config elements passed via `extraESLintConfigs`
+ * 10. `eslint-config-prettier` — always last to silence formatting rules
+ *
+ * ---
+ *
+ * **Zero-config** (`eslint.config.mjs` — recommended starting point):
+ * ```js
+ * import upfluence from '@upfluence/w-conf/eslint';
+ * export default upfluence;
+ * ```
+ *
+ * **With custom glob overrides:**
+ * ```js
+ * import { buildConfiguration } from '@upfluence/w-conf/eslint';
+ * export default buildConfiguration({
+ *   ignores: ['dist/', 'coverage/'],
+ *   testFiles: ['packages/\*\/tests/\*\*\/*-test.{js,ts}'],
+ *   nodeFiles: ['ember-cli-build.js', 'config/\*\*\/*.js'],
+ * });
+ * ```
+ *
+ * **With extra rules appended** (monorepo overrides, third-party plugins, etc.):
+ * ```js
+ * import { buildConfiguration } from '@upfluence/w-conf/eslint';
+ * export default buildConfiguration(
+ *   {},
+ *   { rules: { 'no-console': 'warn' } },
+ * );
+ * ```
+ *
+ * @param {ESLintConfigOptions} [options={}]
+ *   Glob customization options. All properties are optional; omitted ones fall
+ *   back to their respective defaults ({@link DEFAULT_IGNORES},
+ *   {@link DEFAULT_TEST_FILES}, {@link DEFAULT_NODE_FILES}).
+ * @param {...ESLintConfigElement} extraESLintConfigs
+ *   Additional flat-config elements inserted after the standard blocks but
+ *   before `eslint-config-prettier`. Useful for monorepo-specific overrides,
+ *   custom rules, or third-party plugins not included in the base set.
+ * @returns {ReturnType<typeof defineConfig>}
+ *   A fully resolved flat-config array, ready to export directly or to spread
+ *   into a parent `defineConfig` call.
  */
-export function buildConfiguration(options: ESLintConfigOptions = {}, ...extraESLintConfigs: ESLintConfigArgs) {
-  const ignoresOrFallback: ESLintConfigElement[] =
-    options.ignores !== undefined ? [{ ignores: options.ignores }] : DEFAULT_IGNORES;
+export function buildConfiguration(options = {}, ...extraESLintConfigs) {
+  const ignoresOrFallback = options.ignores !== undefined ? [{ ignores: options.ignores }] : DEFAULT_IGNORES;
   const testFilesOrFallback = options?.testFiles ?? DEFAULT_TEST_FILES;
   const nodeFilesOrFallback = options?.nodeFiles ?? DEFAULT_NODE_FILES;
 
