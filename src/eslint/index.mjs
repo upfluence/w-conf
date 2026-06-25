@@ -115,7 +115,7 @@ export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
  * (`recommendedTypeChecked`) needs a per-repo tsconfig/projectService and is
  * deferred to a later phase.
  */
-export const typescript = [
+export const typescript = /** @type {ESLintConfigElement[]} */ ([
   {
     files: ['**/*.ts'],
     languageOptions: {
@@ -124,9 +124,12 @@ export const typescript = [
         sourceType: 'module'
       }
     },
-    extends: [...tseslint.configs.recommended]
+    extends: [...tseslint.configs.recommended],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
   }
-];
+]);
 
 /*
  * JavaScript files.
