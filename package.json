@@ -19,7 +19,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=22.6.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
