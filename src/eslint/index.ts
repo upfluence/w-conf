@@ -109,7 +109,6 @@ export const typescript: ESLintConfigElement[] = [
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        ecmaVersion: 'latest',
         sourceType: 'module'
       }
     },
