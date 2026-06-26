@@ -129,7 +129,17 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
     },
     extends: [...tseslint.configs.recommended],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off'
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          minimumDescriptionLength: 10,
+          'ts-check': false,
+          'ts-expect-error': 'allow-with-description',
+          'ts-ignore': true,
+          'ts-nocheck': true
+        }
+      ]
     }
   }
 ]);
