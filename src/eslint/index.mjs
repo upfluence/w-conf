@@ -3,7 +3,7 @@
  * Shared ESLint flat configuration for Upfluence web projects.
  *
  * Built following https://typescript-eslint.io/getting-started/ and the
- * CD-205 Phase 1 audit (see `docs/eslint-phase1-rule-matrix.md`).
+ * CD-205 Phase 1 audit.
  *
  * Separation of concerns:
  *   - ESLint   -> code quality / correctness (this file)
@@ -25,7 +25,6 @@ import tseslint from 'typescript-eslint';
 
 /**
  * A single ESLint flat-config element accepted by {@link defineConfig}.
- * Equivalent to `Parameters<typeof defineConfig>[number]`.
  *
  * @typedef {Parameters<typeof defineConfig>[number]} ESLintConfigElement
  */
@@ -44,7 +43,7 @@ import tseslint from 'typescript-eslint';
  */
 
 /*
- * Ember "classic"-era rules that every Upfluence repo already disables today.
+ * Ember rules that every Upfluence repo already disables today.
  * They are enabled by `ember.configs.base` but kept OFF here so adoption of the
  * shared config introduces no new violations. Re-enabling any of these is a
  * deliberate modernization step, not core work.
@@ -68,13 +67,12 @@ export const emberCompatibilityDisables = {
   'ember/no-observers': 'off',
   'ember/no-settled-after-test-helper': 'off',
   'ember/require-tagless-components': 'off',
-  'ember/use-ember-data-rfc-395-imports': 'off'
+  'ember/use-ember-data-rfc-395-imports': 'off',
+  'ember/no-runloop': 'off'
 };
 
 /*
  * Default node/config-file globs (standard ember-cli addon + app layout).
- * Normalizes the override that was inert in 6 repos (declared `plugins: ['node']`
- * but never extended the recommended set). Repos can pass their own list.
  */
 export const DEFAULT_NODE_FILES = [
   '**/*.cjs',
@@ -94,16 +92,21 @@ export const DEFAULT_NODE_FILES = [
   'tests/dummy/config/**/*.js'
 ];
 
-/* Default test globs (qunit). Covers js and ts test files. */
+/*
+ * Default test globs (qunit). Covers js and ts test files.
+ */
 export const DEFAULT_TEST_FILES = ['tests/**/*-test.{js,ts}'];
 
-/* --- Building blocks (named exports for composition) --- */
+/* --- Exported building blocks (for composition) --- */
 
-/* `eslint:recommended` core. */
+/*
+ * `eslint:recommended` core.
+ */
 export const core = [js.configs.recommended];
 
 /*
- * Ember recommended with the compatibility disables. */
+ * Ember recommended with the compatibility disables.
+ */
 export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
   ember.configs.base,
   { name: 'upfluence/ember-compatibility-disables', rules: emberCompatibilityDisables }
@@ -133,8 +136,7 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
 
 /*
  * JavaScript files.
- * Uses `tseslint.parser` instead of Babel. It is completely capable of parsing
- * standard JS files containing decorators, allowing us to drop Babel!
+ * Note: `tseslint.parser` can parse JS files.
  */
 export const javascript = [
   {
@@ -182,10 +184,14 @@ export const nodeFiles = (files = DEFAULT_NODE_FILES) => [
   }
 ];
 
-/* Re-export prettier so consumers always place it correctly (last). */
+/*
+ * Re-export prettier so consumers always place it correctly (last).
+ */
 export { eslintConfigPrettierPlaceLast };
 
-/* Sensible default ignores (node_modules is ignored by ESLint by default). */
+/*
+ * Sensible default ignores (node_modules is ignored by ESLint by default).
+ */
 export const DEFAULT_IGNORES = [
   {
     ignores: [
@@ -205,18 +211,18 @@ export const DEFAULT_IGNORES = [
 /**
  * Builds a complete ESLint flat-config array for an Upfluence web project.
  *
- * Assembles the standard rule set in the following order:
+ * Assembles the standard rule set:
  *
- *  1. Ignore patterns — custom `options.ignores` or {@link DEFAULT_IGNORES}
- *  2. Linter meta-options (`reportUnusedDisableDirectives`, `reportUnusedInlineConfigs`)
- *  3. `eslint:recommended` core rules — {@link core}
- *  4. `eslint-plugin-ember` recommended + {@link emberCompatibilityDisables} — {@link emberConfig}
- *  5. JavaScript files (TypeScript parser, browser globals) — {@link javascript}
- *  6. TypeScript files (`typescript-eslint` recommended, untyped) — {@link typescript}
- *  7. QUnit test files (`eslint-plugin-qunit`) — {@link qunitTests}
- *  8. Node.js / config files (`eslint-plugin-n`, node globals) — {@link nodeFiles}
- *  9. Any additional flat-config elements passed via `extraESLintConfigs`
- * 10. `eslint-config-prettier` — always last to silence formatting rules
+ *  - Ignore patterns — custom `options.ignores` or {@link DEFAULT_IGNORES}
+ *  - Linter meta-options (`reportUnusedDisableDirectives`, `reportUnusedInlineConfigs`)
+ *  - `eslint:recommended` core rules — {@link core}
+ *  - `eslint-plugin-ember` recommended + {@link emberCompatibilityDisables} — {@link emberConfig}
+ *  - JavaScript files (TypeScript parser, browser globals) — {@link javascript}
+ *  - TypeScript files (`typescript-eslint` recommended, untyped) — {@link typescript}
+ *  - QUnit test files (`eslint-plugin-qunit`) — {@link qunitTests}
+ *  - Node.js / config files (`eslint-plugin-n`, node globals) — {@link nodeFiles}
+ *  - Any additional flat-config elements passed via `extraESLintConfigs`
+ *  - `eslint-config-prettier` — always last to silence formatting rules
  *
  * ---
  *
@@ -250,9 +256,9 @@ export const DEFAULT_IGNORES = [
  *   back to their respective defaults ({@link DEFAULT_IGNORES},
  *   {@link DEFAULT_TEST_FILES}, {@link DEFAULT_NODE_FILES}).
  * @param {...ESLintConfigElement} extraESLintConfigs
- *   Additional flat-config elements inserted after the standard blocks but
- *   before `eslint-config-prettier`. Useful for monorepo-specific overrides,
- *   custom rules, or third-party plugins not included in the base set.
+ *   Additional flat-config elements inserted after the standard blocks.
+ *   Useful for monorepo-specific overrides, custom rules, or third-party
+ *   plugins not included in the base set.
  * @returns {ReturnType<typeof defineConfig>}
  *   A fully resolved flat-config array, ready to export directly or to spread
  *   into a parent `defineConfig` call.
