@@ -76,10 +76,13 @@ export const emberCompatibilityDisables = {
  */
 export const DEFAULT_NODE_FILES = [
   '**/*.cjs',
+  '**/*.mjs',
   '.eslintrc.js',
   '.prettierrc.js',
   '.stylelintrc.js',
   '.template-lintrc.js',
+  '*.config.js',
+  '*.config.mjs',
   'ember-cli-build.js',
   'index.js',
   'testem.js',
@@ -88,6 +91,7 @@ export const DEFAULT_NODE_FILES = [
   'blueprints/*/index.js',
   'config/**/*.js',
   'lib/*/index.js',
+  'scripts/**/*.{js,mjs,cjs}',
   'server/**/*.js',
   'tests/dummy/config/**/*.js'
 ];
@@ -124,7 +128,11 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
+        ecmaVersion: 'latest',
         sourceType: 'module'
+      },
+      globals: {
+        ...globals.browser
       }
     },
     extends: [...tseslint.configs.recommended],
@@ -209,9 +217,12 @@ export const DEFAULT_IGNORES = [
       'declarations/',
       'coverage/',
       'tmp/',
+      'vendor/',
+      'storybook-static/',
       'blueprints/*/files/',
       'bower_components/',
       '.node_modules.ember-try/',
+      '.eslintcache',
       'bower.json.ember-try',
       'package.json.ember-try'
     ]

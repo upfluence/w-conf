@@ -132,9 +132,9 @@ import { buildConfiguration } from '@upfluence/w-conf/eslint';
 
 export default defineConfig(
   ...buildConfiguration({
-    ignores: ['dist/', 'declarations/', 'coverage/', 'my-custom-unlinted-folder/'],
+    ignores: ['dist/', 'vendor/', 'declarations/', 'coverage/', 'my-custom-unlinted-folder/'],
     testFiles: ['packages/*/tests/**/*-test.{js,ts}'],
-    nodeFiles: ['ember-cli-build.js', 'config/**/*.js', 'gulpfile.js']
+    nodeFiles: ['eslint.config.mjs', 'ember-cli-build.js', 'config/**/*.js', 'scripts/**/*.mjs']
   })
 );
 ```
