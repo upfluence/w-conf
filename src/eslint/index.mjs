@@ -65,34 +65,32 @@ export const emberCompatibilityDisables = {
   'ember/no-mixins': 'off',
   'ember/no-new-mixins': 'off',
   'ember/no-observers': 'off',
+  'ember/no-runloop': 'off',
   'ember/no-settled-after-test-helper': 'off',
   'ember/require-tagless-components': 'off',
-  'ember/use-ember-data-rfc-395-imports': 'off',
-  'ember/no-runloop': 'off'
+  'ember/use-ember-data-rfc-395-imports': 'off'
 };
 
 /*
  * Default node/config-file globs (standard ember-cli addon + app layout).
  */
 export const DEFAULT_NODE_FILES = [
-  '**/*.cjs',
-  '**/*.mjs',
   '.eslintrc.js',
   '.prettierrc.js',
   '.stylelintrc.js',
   '.template-lintrc.js',
   '*.config.js',
-  '*.config.mjs',
-  'ember-cli-build.js',
-  'index.js',
-  'testem.js',
-  'testem*.js',
+  '**/*.cjs',
   'addon-main.cjs',
   'blueprints/*/index.js',
   'config/**/*.js',
+  'ember-cli-build.js',
+  'index.js',
   'lib/*/index.js',
   'scripts/**/*.{js,mjs,cjs}',
   'server/**/*.js',
+  'testem.js',
+  'testem*.js',
   'tests/dummy/config/**/*.js'
 ];
 
@@ -213,18 +211,18 @@ export { eslintConfigPrettierPlaceLast };
 export const DEFAULT_IGNORES = [
   {
     ignores: [
-      'dist/',
-      'declarations/',
-      'coverage/',
-      'tmp/',
-      'vendor/',
-      'storybook-static/',
+      '.eslintcache',
+      '.node_modules.ember-try/',
       'blueprints/*/files/',
       'bower_components/',
-      '.node_modules.ember-try/',
-      '.eslintcache',
       'bower.json.ember-try',
-      'package.json.ember-try'
+      'coverage/',
+      'declarations/',
+      'dist/',
+      'package.json.ember-try',
+      'storybook-static/',
+      'tmp/',
+      'vendor/'
     ]
   }
 ];
