@@ -119,7 +119,13 @@ export const core = [
  */
 export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
   ember.configs.base,
-  { name: 'upfluence/ember-compatibility-disables', rules: emberCompatibilityDisables }
+  { name: 'upfluence/ember-compatibility-disables', rules: emberCompatibilityDisables },
+  {
+    name: 'upfluence/ember-rules',
+    rules: {
+      'ember/no-empty-glimmer-component-classes': 'off'
+    }
+  }
 ]);
 
 /*
@@ -145,6 +151,7 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
     rules: {
       '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'always' }],
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_(\w+)?' }],
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {
