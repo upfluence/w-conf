@@ -104,14 +104,28 @@ export const DEFAULT_TEST_FILES = ['tests/**/*-test.{js,ts}'];
 /*
  * `eslint:recommended` core.
  */
-export const core = [js.configs.recommended];
+export const core = [
+  js.configs.recommended,
+  {
+    name: 'upfluence/core-rules',
+    rules: {
+      'no-multiple-empty-lines': ['error', { max: 1 }]
+    }
+  }
+];
 
 /*
  * Ember recommended with the compatibility disables.
  */
 export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
   ember.configs.base,
-  { name: 'upfluence/ember-compatibility-disables', rules: emberCompatibilityDisables }
+  { name: 'upfluence/ember-compatibility-disables', rules: emberCompatibilityDisables },
+  {
+    name: 'upfluence/ember-rules',
+    rules: {
+      'ember/no-empty-glimmer-component-classes': 'off'
+    }
+  }
 ]);
 
 /*
@@ -135,7 +149,9 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
     },
     extends: [...tseslint.configs.recommended],
     rules: {
+      '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'always' }],
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_(\w+)?' }],
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {
@@ -178,7 +194,10 @@ export const qunitTests = (files = DEFAULT_TEST_FILES) => [
   {
     files,
     plugins: { qunit },
-    rules: qunit.configs.recommended.rules
+    rules: {
+      ...qunit.configs.recommended.rules,
+      'qunit/require-expect': ['error', 'except-simple']
+    }
   }
 ];
 
