@@ -12,6 +12,40 @@ pnpm add -D @upfluence/w-conf
 
 You can extend your project's configuration files with the shared configurations provided by `@upfluence/w-conf`.
 
+### Browsers
+
+The shared browser target baseline is exported as JSON:
+
+```js
+const browsers = require('@upfluence/w-conf/browsers/web-baseline.json');
+```
+
+It is intended for Ember `config/targets.js` files:
+
+```js
+'use strict';
+
+const browsers = require('@upfluence/w-conf/browsers/web-baseline.json');
+
+module.exports = { browsers };
+```
+
+The current baseline matches Web Platform Baseline 2022-era browser support:
+
+```json
+[
+  "chrome >= 105",
+  "edge >= 105",
+  "firefox >= 104",
+  "safari >= 15.6",
+  "ios_saf >= 15.6",
+  "and_chr >= 105",
+  "and_ff >= 104"
+]
+```
+
+This removes legacy targets such as IE 11 while keeping a stable, shared target set across Ember apps, addons, engines, and host apps.
+
 ### Prettier
 
 The base Prettier configuration includes sensible defaults for code formatting that align with Upfluence's coding standards, including settings for Handlebars files and import sorting.

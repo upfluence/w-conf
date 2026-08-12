@@ -20,6 +20,5 @@ Related to: #<!-- enter issue number here -->
 - [ ] Only addresses one issue
 - [ ] Properly assigned
 - [ ] Added/updated tests
-- [ ] Added/updated documentation with Figma design link. Don't forget to replace "design" by "file" in the URL. For example https://www.figma.com/file/example
-- [ ] Migrated touched components to Glimmer Components
+- [ ] Added/updated documentation
 - [ ] Properly labeled
