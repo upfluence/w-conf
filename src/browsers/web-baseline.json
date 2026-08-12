@@ -1,9 +1,4 @@
 [
-  "chrome >= 105",
-  "edge >= 105",
-  "firefox >= 104",
-  "safari >= 15.6",
-  "ios_saf >= 15.6",
-  "and_chr >= 105",
-  "and_ff >= 104"
+  "baseline widely available with downstream",
+  "ios_saf >= 15.6"
 ]

@@ -30,21 +30,60 @@ const browsers = require('@upfluence/w-conf/browsers/web-baseline.json');
 module.exports = { browsers };
 ```
 
-The current baseline matches Web Platform Baseline 2022-era browser support:
+The current baseline uses Web Platform Baseline Widely Available, including
+compatible downstream browsers, with an explicit iOS Safari safety floor:
 
 ```json
-[
-  "chrome >= 105",
-  "edge >= 105",
-  "firefox >= 104",
-  "safari >= 15.6",
-  "ios_saf >= 15.6",
-  "and_chr >= 105",
-  "and_ff >= 104"
-]
+["baseline widely available with downstream", "ios_saf >= 15.6"]
 ```
 
-This removes legacy targets such as IE 11 while keeping a stable, shared target set across Ember apps, addons, engines, and host apps.
+`baseline widely available with downstream` tracks features that are broadly
+available across the Baseline core browser set and includes compatible
+downstream browsers, such as browsers derived from Chromium or Gecko.
+
+`ios_saf >= 15.6` is intentionally added as a mobile safety rail. Based on our
+traffic analysis, older iOS/Safari versions are the main unsupported pocket, and
+mobile Safari traffic is important enough for us to keep this explicit floor.
+
+This removes legacy targets such as IE 11 while keeping a stable, shared target
+set across Ember apps, addons, engines, and host apps.
+
+Consumer projects need a Browserslist toolchain that supports Baseline queries.
+If a build fails with `Unknown browser query`, update the consumer's
+Browserslist-related dependencies before using this shared target.
+
+#### Web Baseline Coverage Check
+
+`w-conf` also ships a repository-level check that compares the shared browser
+target against real Google Analytics traffic:
+
+```bash
+pnpm web-baseline:check
+```
+
+The GA-backed check uses a 180-day window, `Sessions` as the primary metric, and
+fails when known-session coverage drops below 95% or unknown traffic rises above
+1%.
+
+For local CSV exports matching the GA browser export shape:
+
+```bash
+pnpm web-baseline:check:csv /path/to/analytics-export.csv
+```
+
+To validate that the configured target can be parsed by the bundled Browserslist
+version:
+
+```bash
+pnpm web-baseline:check:target
+```
+
+GA4 mode requires a property ID and a base64-encoded service-account JSON value:
+
+```bash
+export GA_PROPERTY_ID=123456789
+export GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64="$(base64 -i service-account.json)"
+```
 
 ### Prettier
 
