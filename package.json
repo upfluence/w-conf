@@ -48,6 +48,7 @@
   ],
   "exports": {
     "./prettier": "./src/prettier/index.mjs",
-    "./eslint": "./src/eslint/index.mjs"
+    "./eslint": "./src/eslint/index.mjs",
+    "./browsers/web-baseline.json": "./src/browsers/web-baseline.json"
   }
 }
