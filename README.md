@@ -46,6 +46,9 @@ Consumer projects need a Browserslist toolchain that supports Baseline queries.
 If a build fails with `Unknown browser query`, update the consumer's
 Browserslist-related dependencies before using this shared target.
 
+`pnpm dlx update-browserslist-db latest`
+
+
 #### Web Baseline Coverage Check
 
 `w-conf` also ships a repository-level check that compares the shared browser
