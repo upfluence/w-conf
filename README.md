@@ -14,21 +14,15 @@ You can extend your project's configuration files with the shared configurations
 
 ### Browsers
 
-The shared browser target baseline is exported as JSON:
+The shared browser target is exported as JSON. It is intended for use with Ember `config/targets.js` files:
 
 ```js
-const browsers = require('@upfluence/w-conf/browsers/web-baseline.json');
-```
-
-It is intended for Ember `config/targets.js` files:
-
-```js
+// config/targets.js
 'use strict';
 
 const browsers = require('@upfluence/w-conf/browsers/web-baseline.json');
 
 module.exports = { browsers };
-```
 
 The current baseline uses Web Platform Baseline Widely Available, including
 compatible downstream browsers, with an explicit iOS Safari safety floor:
