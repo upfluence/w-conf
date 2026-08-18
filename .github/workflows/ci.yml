@@ -37,6 +37,8 @@ jobs:
         run: pnpm install
       - name: Validate Web Baseline Target
         run: pnpm web-baseline:check:target
+      - name: Test Web Baseline Checker
+        run: pnpm web-baseline:test
       - name: Check Web Baseline Traffic Coverage
         if: env.GA_PROPERTY_ID != '' && env.GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64 != ''
         run: pnpm web-baseline:check

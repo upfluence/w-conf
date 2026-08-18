@@ -25,6 +25,20 @@ const baselineBrowserAliases = {
   samsunginternet_android: 'samsung',
   webview_android: 'android'
 };
+const coreBaselineBrowsers = new Set(['chrome', 'edge', 'firefox', 'safari', 'ios_saf']);
+const browserDisplayNames = {
+  and_chr: 'Chrome Android',
+  and_ff: 'Firefox Android',
+  android: 'Android WebView',
+  chrome: 'Chrome',
+  edge: 'Edge',
+  firefox: 'Firefox',
+  ios_saf: 'iOS Safari',
+  op_mob: 'Opera Android',
+  opera: 'Opera',
+  safari: 'Safari',
+  samsung: 'Samsung Internet'
+};
 
 const browserAliases = {
   'android webview': 'android',
@@ -45,6 +59,7 @@ main().catch((error) => {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const policy = await readJson(policyPath);
+  validatePolicy(policy);
   const targetQueries = await readTargetQueries(policy);
   const supportedTargets = resolveSupportedTargets(targetQueries);
 
@@ -65,12 +80,13 @@ async function main() {
     dateRange: source.dateRange,
     policy,
     result,
-    targetQueries
+    targetQueries,
+    supportedTargets
   });
 
+  const failures = validateResult(result);
   const knownCoverage = result.covered.sessions / result.known.sessions;
   const unknownRate = result.unknown.sessions / result.total.sessions;
-  const failures = [];
 
   if (knownCoverage < policy.minimumSessionCoverage) {
     failures.push(
@@ -91,6 +107,30 @@ async function main() {
   }
 
   console.log('\nResult: PASS');
+}
+
+function validatePolicy(policy) {
+  if (policy.primaryMetric !== 'sessions') {
+    throw new Error('web-baseline-policy.json primaryMetric must be "sessions".');
+  }
+
+  if (policy.secondaryMetric !== 'screenPageViews') {
+    throw new Error('web-baseline-policy.json secondaryMetric must be "screenPageViews".');
+  }
+}
+
+function validateResult(result) {
+  const failures = [];
+
+  if (result.total.sessions === 0) {
+    failures.push('traffic result contains zero total sessions');
+  }
+
+  if (result.known.sessions === 0) {
+    failures.push('traffic result contains zero known sessions');
+  }
+
+  return failures;
 }
 
 function parseArgs(argv) {
@@ -165,6 +205,7 @@ async function readTargetQueries(policy) {
 function resolveSupportedTargets(targetQueries) {
   const targets = browserslist(targetQueries);
   const minimums = new Map();
+  const minimumDetails = new Map();
 
   for (const target of getCompatibleVersions({ includeDownstreamBrowsers: true })) {
     const browser = baselineBrowserAliases[target.browser];
@@ -174,7 +215,12 @@ function resolveSupportedTargets(targetQueries) {
       continue;
     }
 
-    mergeMinimum(minimums, browser, candidate);
+    mergeMinimum(minimums, minimumDetails, {
+      browser,
+      version: candidate,
+      releaseDate: target.release_date,
+      source: coreBaselineBrowsers.has(browser) ? 'Baseline Widely Available' : 'downstream'
+    });
   }
 
   for (const query of targetQueries.filter((targetQuery) => !targetQuery.startsWith('baseline '))) {
@@ -186,31 +232,31 @@ function resolveSupportedTargets(targetQueries) {
         continue;
       }
 
-      mergeMinimum(minimums, browser, candidate);
+      mergeMinimum(minimums, minimumDetails, {
+        browser,
+        version: candidate,
+        releaseDate: null,
+        source: 'explicit override'
+      });
     }
   }
 
-  return { minimums, targets };
+  return { minimumDetails, minimums, targets };
 }
 
-function mergeMinimum(minimums, browser, candidate) {
-  const current = minimums.get(browser);
+function mergeMinimum(minimums, minimumDetails, detail) {
+  const current = minimums.get(detail.browser);
 
-  if (!current || compareVersions(candidate, current) < 0) {
-    minimums.set(browser, candidate);
+  if (!current || compareVersions(detail.version, current) < 0) {
+    minimums.set(detail.browser, detail.version);
+    minimumDetails.set(detail.browser, detail);
   }
 }
 
 function printTargetSummary(targetQueries, supportedTargets) {
   console.log('Web baseline target parsed successfully.');
   console.log(`Queries: ${targetQueries.join(', ')}`);
-  console.log('Resolved practical minimums:');
-
-  [...supportedTargets.minimums.entries()]
-    .sort(([left], [right]) => left.localeCompare(right))
-    .forEach(([browser, version]) => {
-      console.log(`- ${browser} >= ${formatVersion(version)}`);
-    });
+  printBrowserMinimums(supportedTargets);
 }
 
 async function fetchAnalyticsRows(args, policy) {
@@ -246,6 +292,7 @@ async function fetchAnalyticsRows(args, policy) {
     limit: 250000
   };
   const [response] = await client.runReport(request);
+  const metricIndexes = buildMetricIndexes(response.metricHeaders || []);
 
   return {
     dateRange: `${startDate} to ${endDate}`,
@@ -255,10 +302,24 @@ async function fetchAnalyticsRows(args, policy) {
       deviceCategory: row.dimensionValues[2]?.value || '',
       operatingSystem: row.dimensionValues[3]?.value || '',
       osVersion: row.dimensionValues[4]?.value || '',
-      views: Number(row.metricValues[1]?.value || 0),
-      sessions: Number(row.metricValues[0]?.value || 0)
+      views: readMetricValue(row, metricIndexes, policy.secondaryMetric),
+      sessions: readMetricValue(row, metricIndexes, policy.primaryMetric)
     }))
   };
+}
+
+function buildMetricIndexes(metricHeaders) {
+  return new Map(metricHeaders.map((header, index) => [header.name, index]));
+}
+
+function readMetricValue(row, metricIndexes, metricName) {
+  const index = metricIndexes.get(metricName);
+
+  if (index === undefined) {
+    throw new Error(`GA4 response did not include metric "${metricName}".`);
+  }
+
+  return Number(row.metricValues[index]?.value || 0);
 }
 
 function parseCsvExport(input) {
@@ -461,7 +522,7 @@ function addMetrics(target, source) {
   target.views += source.views;
 }
 
-function printReport({ dateRange, policy, result, targetQueries }) {
+function printReport({ dateRange, policy, result, supportedTargets, targetQueries }) {
   const knownCoverage = result.covered.sessions / result.known.sessions;
   const totalCoverage = result.covered.sessions / result.total.sessions;
   const unknownRate = result.unknown.sessions / result.total.sessions;
@@ -471,6 +532,7 @@ function printReport({ dateRange, policy, result, targetQueries }) {
   console.log(`Target: ${targetQueries.join(', ')}`);
   console.log(`Minimum known-session coverage: ${formatPercent(policy.minimumSessionCoverage)}`);
   console.log(`Maximum unknown-session traffic: ${formatPercent(policy.maximumUnknownTraffic)}`);
+  printBrowserMinimums(supportedTargets);
   console.log('');
   console.log('Sessions');
   console.log(`- total: ${formatNumber(result.total.sessions)}`);
@@ -506,6 +568,54 @@ function printReport({ dateRange, policy, result, targetQueries }) {
       );
     });
   }
+}
+
+function printBrowserMinimums(supportedTargets) {
+  const rows = [...supportedTargets.minimumDetails.values()]
+    .sort((left, right) => getBrowserSortIndex(left.browser) - getBrowserSortIndex(right.browser))
+    .map((detail) => ({
+      Browser: browserDisplayNames[detail.browser] || detail.browser,
+      Minimum: formatVersion(detail.version),
+      Released: detail.releaseDate || 'override',
+      Period: detail.releaseDate ? formatReleasePeriod(detail.releaseDate) : getOverridePeriod(detail),
+      Source: detail.source
+    }));
+
+  console.log('');
+  console.log('Resolved browser minimums');
+  printTable(['Browser', 'Minimum', 'Released', 'Period', 'Source'], rows);
+}
+
+function printTable(headers, rows) {
+  const widths = headers.map((header) => {
+    return Math.max(header.length, ...rows.map((row) => String(row[header]).length));
+  });
+  const formatRow = (row) => {
+    return headers.map((header, index) => String(row[header]).padEnd(widths[index])).join('  ');
+  };
+
+  console.log(formatRow(Object.fromEntries(headers.map((header) => [header, header]))));
+  console.log(widths.map((width) => '-'.repeat(width)).join('  '));
+  rows.forEach((row) => console.log(formatRow(row)));
+}
+
+function getBrowserSortIndex(browser) {
+  return ['chrome', 'edge', 'firefox', 'safari', 'ios_saf', 'and_chr', 'and_ff', 'android', 'opera', 'op_mob', 'samsung'].indexOf(browser);
+}
+
+function formatReleasePeriod(releaseDate) {
+  const date = new Date(`${releaseDate}T00:00:00Z`);
+  const quarter = Math.floor(date.getUTCMonth() / 3) + 1;
+
+  return `Q${quarter} ${date.getUTCFullYear()}`;
+}
+
+function getOverridePeriod(detail) {
+  if (detail.browser === 'ios_saf') {
+    return 'iOS safety floor';
+  }
+
+  return 'explicit override';
 }
 
 function normalize(value) {
