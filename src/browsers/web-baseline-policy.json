@@ -1,0 +1,9 @@
+{
+  "target": "./web-baseline.json",
+  "primaryMetric": "sessions",
+  "secondaryMetric": "screenPageViews",
+  "windowDays": 180,
+  "minimumSessionCoverage": 0.95,
+  "maximumUnknownTraffic": 0.01,
+  "deviceBreakdown": true
+}
