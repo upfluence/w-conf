@@ -1,4 +1,4 @@
 [
   "baseline widely available with downstream",
-  "ios_saf >= 15.6"
+  "last 5 ios_saf major versions"
 ]

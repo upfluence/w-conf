@@ -16,7 +16,7 @@ You can extend your project's configuration files with the shared configurations
 
 The shared browser target is exported as JSON. It is intended for use with Ember `config/targets.js` files:
 
-```js
+````js
 // config/targets.js
 'use strict';
 
@@ -28,14 +28,14 @@ The current baseline uses Web Platform Baseline Widely Available, including
 compatible downstream browsers, with an explicit iOS Safari safety floor:
 
 ```json
-["baseline widely available with downstream", "ios_saf >= 15.6"]
-```
+["baseline widely available with downstream", "last 5 ios_saf major versions"]
+````
 
 `baseline widely available with downstream` tracks features that are broadly
 available across the Baseline core browser set and includes compatible
 downstream browsers, such as browsers derived from Chromium or Gecko.
 
-`ios_saf >= 15.6` is intentionally added as a mobile safety rail. Based on our
+`last 5 ios_saf major versions` is intentionally added as a mobile safety rail. Based on our
 traffic analysis, older iOS/Safari versions are the main unsupported pocket, and
 mobile Safari traffic is important enough for us to keep this explicit floor.
 
@@ -47,7 +47,6 @@ If a build fails with `Unknown browser query`, update the consumer's
 Browserslist-related dependencies before using this shared target.
 
 `pnpm dlx update-browserslist-db latest`
-
 
 #### Web Baseline Coverage Check
 
