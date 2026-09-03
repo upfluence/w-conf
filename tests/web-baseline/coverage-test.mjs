@@ -61,7 +61,11 @@ for (const testCase of cases) {
   const expectedOutputs = Array.isArray(testCase.expectedOutput) ? testCase.expectedOutput : [testCase.expectedOutput];
 
   for (const expectedOutput of expectedOutputs) {
-    assert.match(output, new RegExp(escapeRegExp(expectedOutput)), `${testCase.name}: missing expected output\n${output}`);
+    assert.match(
+      output,
+      new RegExp(escapeRegExp(expectedOutput)),
+      `${testCase.name}: missing expected output\n${output}`
+    );
   }
 }
 
