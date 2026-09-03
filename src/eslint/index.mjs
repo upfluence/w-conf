@@ -34,8 +34,9 @@ import tseslint from 'typescript-eslint';
  *
  * @typedef {Object} ESLintConfigOptions
  * @property {string[]} [ignores]
- *   Custom ignore patterns. When provided, replaces {@link DEFAULT_IGNORES} entirely.
- *   Pass an empty array to disable all default ignores.
+ *   Custom ignore patterns added to {@link DEFAULT_IGNORES}.
+ * @property {boolean} [replaceDefaultIgnores]
+ *   When true, use only `ignores`. Pass `ignores: []` to disable all default ignores.
  * @property {string[]} [testFiles]
  *   Glob patterns for QUnit test files. Defaults to {@link DEFAULT_TEST_FILES}.
  * @property {string[]} [nodeFiles]
@@ -79,7 +80,9 @@ export const DEFAULT_NODE_FILES = [
   '.prettierrc.js',
   '.stylelintrc.js',
   '.template-lintrc.js',
+  '.template-lintrc.mjs',
   '*.config.js',
+  '*.config.mjs',
   '**/*.cjs',
   'addon-main.cjs',
   'blueprints/*/index.js',
@@ -104,21 +107,21 @@ export const DEFAULT_TEST_FILES = ['tests/**/*-test.{js,ts}'];
 /*
  * `eslint:recommended` core.
  */
-export const core = [
-  js.configs.recommended,
+export const core = /** @type {ESLintConfigElement[]} */ ([
+  { ...js.configs.recommended, name: 'upfluence/eslint-recommended' },
   {
     name: 'upfluence/core-rules',
     rules: {
       'no-multiple-empty-lines': ['error', { max: 1 }]
     }
   }
-];
+]);
 
 /*
  * Ember recommended with the compatibility disables.
  */
 export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
-  ember.configs.base,
+  { ...ember.configs.base, name: 'upfluence/ember-base' },
   { name: 'upfluence/ember-compatibility-disables', rules: emberCompatibilityDisables },
   {
     name: 'upfluence/ember-rules',
@@ -136,6 +139,7 @@ export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
  */
 export const typescript = /** @type {ESLintConfigElement[]} */ ([
   {
+    name: 'upfluence/typescript',
     files: ['**/*.ts'],
     languageOptions: {
       parser: tseslint.parser,
@@ -151,7 +155,7 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
     rules: {
       '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'always' }],
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_(\w+)?' }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {
@@ -172,6 +176,7 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
  */
 export const javascript = [
   {
+    name: 'upfluence/javascript',
     files: ['**/*.js'],
     languageOptions: {
       parser: tseslint.parser,
@@ -190,34 +195,49 @@ export const javascript = [
  * @param {string[]} [files=DEFAULT_TEST_FILES]
  * @returns {ESLintConfigElement[]}
  */
-export const qunitTests = (files = DEFAULT_TEST_FILES) => [
-  {
-    files,
-    plugins: { qunit },
-    rules: {
-      ...qunit.configs.recommended.rules,
-      'qunit/require-expect': ['error', 'except-simple']
-    }
-  }
-];
+export const qunitTests = (files = DEFAULT_TEST_FILES) =>
+  files.length === 0
+    ? []
+    : [
+        {
+          name: 'upfluence/qunit-tests',
+          files,
+          plugins: { qunit },
+          rules: {
+            ...qunit.configs.recommended.rules,
+            'qunit/require-expect': ['error', 'except-simple']
+          }
+        }
+      ];
+
+const browserGlobalsOff = Object.fromEntries(Object.keys(globals.browser).map((name) => [name, 'off']));
 
 /**
  * @param {string[]} [files=DEFAULT_NODE_FILES]
  * @returns {ESLintConfigElement[]}
  */
-export const nodeFiles = (files = DEFAULT_NODE_FILES) => [
-  {
-    files,
-    plugins: { n },
+export const nodeFiles = (files = DEFAULT_NODE_FILES) => {
+  if (files.length === 0) return [];
+
+  const nodeConfigs = [
+    { ...n.configs['flat/recommended-script'], files: ['**/*.{js,cjs}'] },
+    { ...n.configs['flat/recommended-module'], files: ['**/*.mjs'] }
+  ];
+
+  return nodeConfigs.map((config) => ({
+    ...config,
+    name: `upfluence/${config.name}`,
+    files: config.files.flatMap((moduleGlob) => files.map((fileGlob) => [fileGlob, moduleGlob])),
     languageOptions: {
-      sourceType: 'script',
+      ...config.languageOptions,
       ecmaVersion: 'latest',
       globals: {
-        ...globals.node
+        ...browserGlobalsOff,
+        ...(config.languageOptions?.globals ?? {})
       }
     }
-  }
-];
+  }));
+};
 
 /*
  * Re-export prettier so consumers always place it correctly (last).
@@ -229,6 +249,7 @@ export { eslintConfigPrettierPlaceLast };
  */
 export const DEFAULT_IGNORES = [
   {
+    name: 'upfluence/default-ignores',
     ignores: [
       '.eslintcache',
       '.node_modules.ember-try/',
@@ -251,7 +272,7 @@ export const DEFAULT_IGNORES = [
  *
  * Assembles the standard rule set:
  *
- *  - Ignore patterns — custom `options.ignores` or {@link DEFAULT_IGNORES}
+ *  - Ignore patterns — {@link DEFAULT_IGNORES} plus custom `options.ignores`
  *  - Linter meta-options (`reportUnusedDisableDirectives`, `reportUnusedInlineConfigs`)
  *  - `eslint:recommended` core rules — {@link core}
  *  - `eslint-plugin-ember` recommended + {@link emberCompatibilityDisables} — {@link emberConfig}
@@ -274,7 +295,7 @@ export const DEFAULT_IGNORES = [
  * ```js
  * import { buildConfiguration } from '@upfluence/w-conf/eslint';
  * export default buildConfiguration({
- *   ignores: ['dist/', 'coverage/'],
+ *   ignores: ['my-custom-unlinted-folder/'],
  *   testFiles: ['packages/\*\/tests/\*\*\/*-test.{js,ts}'],
  *   nodeFiles: ['ember-cli-build.js', 'config/\*\*\/*.js'],
  * });
@@ -292,7 +313,8 @@ export const DEFAULT_IGNORES = [
  * @param {ESLintConfigOptions} [options={}]
  *   Glob customization options. All properties are optional; omitted ones fall
  *   back to their respective defaults ({@link DEFAULT_IGNORES},
- *   {@link DEFAULT_TEST_FILES}, {@link DEFAULT_NODE_FILES}).
+ *   {@link DEFAULT_TEST_FILES}, {@link DEFAULT_NODE_FILES}). Pass an empty
+ *   `testFiles` or `nodeFiles` array to disable that configuration block.
  * @param {...ESLintConfigElement} extraESLintConfigs
  *   Additional flat-config elements inserted after the standard blocks.
  *   Useful for monorepo-specific overrides, custom rules, or third-party
@@ -302,12 +324,14 @@ export const DEFAULT_IGNORES = [
  *   into a parent `defineConfig` call.
  */
 export function buildConfiguration(options = {}, ...extraESLintConfigs) {
-  const ignoresOrFallback = options.ignores !== undefined ? [{ ignores: options.ignores }] : DEFAULT_IGNORES;
+  const { ignores = [] } = options;
+  const customIgnores = ignores.length > 0 ? [{ name: 'upfluence/custom-ignores', ignores }] : [];
+  const ignoreConfigs = options.replaceDefaultIgnores ? customIgnores : [...DEFAULT_IGNORES, ...customIgnores];
   const testFilesOrFallback = options?.testFiles ?? DEFAULT_TEST_FILES;
   const nodeFilesOrFallback = options?.nodeFiles ?? DEFAULT_NODE_FILES;
 
   return defineConfig(
-    ...ignoresOrFallback,
+    ...ignoreConfigs,
     {
       name: 'upfluence/linter-options',
       linterOptions: {
@@ -322,7 +346,7 @@ export function buildConfiguration(options = {}, ...extraESLintConfigs) {
     ...qunitTests(testFilesOrFallback),
     ...nodeFiles(nodeFilesOrFallback),
     ...extraESLintConfigs,
-    eslintConfigPrettierPlaceLast
+    { ...eslintConfigPrettierPlaceLast, name: 'upfluence/prettier' }
   );
 }
 

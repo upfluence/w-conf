@@ -26,7 +26,9 @@
     "web-baseline:check": "node scripts/check-web-baseline-coverage.mjs",
     "web-baseline:check:csv": "node scripts/check-web-baseline-coverage.mjs --csv",
     "web-baseline:check:target": "node scripts/check-web-baseline-coverage.mjs --check-target-only",
-    "web-baseline:test": "node tests/web-baseline/coverage-test.mjs"
+    "web-baseline:test": "node tests/web-baseline/coverage-test.mjs",
+    "format": "prettier --write ./{src,tests,scripts}/**/*",
+    "format:check": "prettier --check ./{src,tests,scripts}/**/*"
   },
   "devDependencies": {
     "@google-analytics/data": "^7.0.0",
