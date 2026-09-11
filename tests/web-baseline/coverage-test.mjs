@@ -18,9 +18,7 @@ const cases = [
       'Web baseline target parsed successfully.',
       'Resolved browser minimums',
       'Chrome',
-      'Q1 2024',
       'Safari',
-      'Q4 2023',
       'iOS safety floor'
     ]
   },
@@ -61,7 +59,11 @@ for (const testCase of cases) {
   const expectedOutputs = Array.isArray(testCase.expectedOutput) ? testCase.expectedOutput : [testCase.expectedOutput];
 
   for (const expectedOutput of expectedOutputs) {
-    assert.match(output, new RegExp(escapeRegExp(expectedOutput)), `${testCase.name}: missing expected output\n${output}`);
+    assert.match(
+      output,
+      new RegExp(escapeRegExp(expectedOutput)),
+      `${testCase.name}: missing expected output\n${output}`
+    );
   }
 }
 

@@ -154,7 +154,7 @@ It includes:
 - `eslint-plugin-ember` (+ `emberCompatibilityDisables`)
 - `typescript-eslint` (`recommended`, untyped)
 - `eslint-plugin-qunit` for tests
-- `eslint-plugin-n` for node/config files
+- `eslint-plugin-n` recommended rules for node/config files
 - `eslint-config-prettier`
 
 References:
@@ -201,12 +201,26 @@ import { buildConfiguration } from '@upfluence/w-conf/eslint';
 
 export default defineConfig(
   ...buildConfiguration({
-    ignores: ['dist/', 'vendor/', 'declarations/', 'coverage/', 'my-custom-unlinted-folder/'],
+    ignores: ['my-custom-unlinted-folder/'],
     testFiles: ['packages/*/tests/**/*-test.{js,ts}'],
     nodeFiles: ['eslint.config.mjs', 'ember-cli-build.js', 'config/**/*.js', 'scripts/**/*.mjs']
   })
 );
 ```
+
+Custom `ignores` are added to the default ignore patterns. To replace the
+defaults entirely, set `replaceDefaultIgnores: true`:
+
+```js
+buildConfiguration({
+  ignores: ['generated/'],
+  replaceDefaultIgnores: true
+});
+```
+
+Pass `testFiles: []` or `nodeFiles: []` to disable the corresponding config
+block. Node configuration files use CommonJS semantics for `.js` and `.cjs`,
+and ES module semantics for `.mjs`.
 
 > Unlike the legacy `.eslintrc.js` setup, flat config lints `.ts` files by
 > default — no `--ext` flag needed.

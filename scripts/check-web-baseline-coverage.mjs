@@ -536,7 +536,9 @@ function printReport({ dateRange, policy, result, supportedTargets, targetQuerie
   console.log('');
   console.log('Sessions');
   console.log(`- total: ${formatNumber(result.total.sessions)}`);
-  console.log(`- covered: ${formatNumber(result.covered.sessions)} (${formatPercent(totalCoverage)} including unknown, ${formatPercent(knownCoverage)} excluding unknown)`);
+  console.log(
+    `- covered: ${formatNumber(result.covered.sessions)} (${formatPercent(totalCoverage)} including unknown, ${formatPercent(knownCoverage)} excluding unknown)`
+  );
   console.log(`- unsupported: ${formatNumber(result.unsupported.sessions)}`);
   console.log(`- unknown: ${formatNumber(result.unknown.sessions)} (${formatPercent(unknownRate)})`);
   console.log('');
@@ -600,7 +602,19 @@ function printTable(headers, rows) {
 }
 
 function getBrowserSortIndex(browser) {
-  return ['chrome', 'edge', 'firefox', 'safari', 'ios_saf', 'and_chr', 'and_ff', 'android', 'opera', 'op_mob', 'samsung'].indexOf(browser);
+  return [
+    'chrome',
+    'edge',
+    'firefox',
+    'safari',
+    'ios_saf',
+    'and_chr',
+    'and_ff',
+    'android',
+    'opera',
+    'op_mob',
+    'samsung'
+  ].indexOf(browser);
 }
 
 function formatReleasePeriod(releaseDate) {
@@ -619,7 +633,9 @@ function getOverridePeriod(detail) {
 }
 
 function normalize(value) {
-  return String(value || '').trim().toLowerCase();
+  return String(value || '')
+    .trim()
+    .toLowerCase();
 }
 
 function formatPercent(value) {
