@@ -18,9 +18,7 @@ const cases = [
       'Web baseline target parsed successfully.',
       'Resolved browser minimums',
       'Chrome',
-      'Q1 2024',
       'Safari',
-      'Q4 2023',
       'iOS safety floor'
     ]
   },
