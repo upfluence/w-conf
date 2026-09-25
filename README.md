@@ -12,6 +12,27 @@ pnpm add -D @upfluence/w-conf
 
 You can extend your project's configuration files with the shared configurations provided by `@upfluence/w-conf`.
 
+### TypeScript diagnostics
+
+`w-conf` ships a development CLI that watches an application's TypeScript project and exposes detailed diagnostics to a local browser over server-sent events. The consuming project must install its own compatible TypeScript version (`>=4.5 <7`); the CLI always uses that version.
+
+```json
+{
+  "scripts": {
+    "prebuild": "ts-diagnostics --clear",
+    "start": "pnpm run --color --parallel --stream \"/^start:.*/\"",
+    "start:ember": "ember serve --port 0",
+    "start:typecheck": "FORCE_COLOR=1 ts-diagnostics"
+  }
+}
+```
+
+Run `ts-diagnostics` from the application root. It reads `tsconfig.json`, starts its HTTP server on an available loopback port, and writes `public/__typescript-diagnostics__.json`. The manifest contains a session-scoped `eventsUrl`; diagnostics events contain the TypeScript error code and message plus file, line, column, source, and highlight length when available.
+
+The CLI removes its own manifest on shutdown. `ts-diagnostics --clear` removes a stale manifest and its temporary files without starting TypeScript, which is useful before production builds. Generated manifest files should be ignored by Git.
+
+Use `ts-diagnostics --help` for the complete command usage. Applications remain responsible for connecting to the manifest and rendering diagnostics in the browser.
+
 ### Browsers
 
 The shared browser target is exported as JSON. It is intended for use with Ember `config/targets.js` files:
