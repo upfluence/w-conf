@@ -23,6 +23,9 @@
     "node": ">=20.0.0"
   },
   "scripts": {
+    "build:typescript-diagnostics": "tsc --project tsconfig.typescript-diagnostics.json",
+    "prepack": "pnpm build:typescript-diagnostics",
+    "typescript-diagnostics:test": "pnpm build:typescript-diagnostics && node tests/typescript-diagnostics/cli-test.mjs",
     "web-baseline:check": "node scripts/check-web-baseline-coverage.mjs",
     "web-baseline:check:csv": "node scripts/check-web-baseline-coverage.mjs --csv",
     "web-baseline:check:target": "node scripts/check-web-baseline-coverage.mjs --check-target-only",
@@ -33,6 +36,7 @@
   "devDependencies": {
     "@google-analytics/data": "^7.0.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^20.19.24",
     "baseline-browser-mapping": "^2.11.13",
     "browserslist": "^4.28.8",
     "eslint": "^10.5.0",
@@ -51,10 +55,20 @@
   "peerDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "eslint": ">=10.5.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "typescript": ">=4.5 <7"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "type": "module",
+  "bin": {
+    "ts-diagnostics": "./dist/typescript-diagnostics/cli.js"
+  },
   "files": [
+    "dist",
     "src"
   ],
   "exports": {
