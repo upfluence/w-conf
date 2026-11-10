@@ -12,6 +12,38 @@ pnpm add -D @upfluence/w-conf
 
 You can extend your project's configuration files with the shared configurations provided by `@upfluence/w-conf`.
 
+### TypeScript
+
+The package provides a shared strictness baseline and Node and Ember presets.
+They require TypeScript 5.9 or newer.
+
+Extend the preset that matches the project environment:
+
+```json
+{
+  "extends": "@upfluence/w-conf/tsconfig/ember.json"
+}
+```
+
+```json
+{
+  "extends": "@upfluence/w-conf/tsconfig/node.json"
+}
+```
+
+Both presets extend `base.json`, which enables strict checking, unused-code
+checks, `noImplicitOverride`, and `erasableSyntaxOnly`. The Node preset uses
+`NodeNext` module semantics; the Ember preset enables legacy decorators and
+disables TypeScript emission by default. Keep project-specific settings such as
+`target`, `moduleResolution`, `paths`, `include`, and declaration output in the
+project's own `tsconfig.json`. Ember packages that emit declarations can
+override `noEmit` and `noEmitOnError`.
+
+`erasableSyntaxOnly` rejects TypeScript syntax that requires runtime
+transformation, including enums, constructor parameter properties, and
+angle-bracket type assertions. Use `as` assertions and erasable TypeScript
+syntax instead.
+
 ### Browsers
 
 The shared browser target is exported as JSON. It is intended for use with Ember `config/targets.js` files:

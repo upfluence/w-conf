@@ -10,6 +10,8 @@
   "keywords": [
     "upfluence",
     "configuration",
+    "typescript",
+    "tsconfig",
     "prettier",
     "eslint",
     "eslintconfig",
@@ -51,7 +53,8 @@
   "peerDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "eslint": ">=10.5.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "typescript": ">=5.9.0"
   },
   "type": "module",
   "files": [
@@ -60,6 +63,9 @@
   "exports": {
     "./prettier": "./src/prettier/index.mjs",
     "./eslint": "./src/eslint/index.mjs",
-    "./browsers/web-baseline.json": "./src/browsers/web-baseline.json"
+    "./browsers/web-baseline.json": "./src/browsers/web-baseline.json",
+    "./tsconfig/base.json": "./src/tsconfig/base.json",
+    "./tsconfig/node.json": "./src/tsconfig/node.json",
+    "./tsconfig/ember.json": "./src/tsconfig/ember.json"
   }
 }
