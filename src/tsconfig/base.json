@@ -8,6 +8,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitOverride": true,
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    "checkJs": true,
   }
 }
