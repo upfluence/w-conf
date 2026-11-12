@@ -20,7 +20,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "web-baseline:check": "node scripts/check-web-baseline-coverage.mjs",
@@ -28,11 +28,13 @@
     "web-baseline:check:target": "node scripts/check-web-baseline-coverage.mjs --check-target-only",
     "web-baseline:test": "node tests/web-baseline/coverage-test.mjs",
     "format": "prettier --write ./{src,tests,scripts}/**/*",
-    "format:check": "prettier --check --ignore-unknown ./{src,tests,scripts}/**/*"
+    "format:check": "prettier --check --ignore-unknown ./{src,tests,scripts}/**/*",
+    "test": "node --experimental-strip-types --test tests/eslint/"
   },
   "devDependencies": {
     "@google-analytics/data": "^7.0.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^26.2.0",
     "baseline-browser-mapping": "^2.11.13",
     "browserslist": "^4.28.8",
     "eslint": "^10.5.0",
@@ -45,6 +47,8 @@
     "eslint-plugin-ember": "^13.3.2",
     "eslint-plugin-n": "^18.1.0",
     "eslint-plugin-qunit": "^8.2.6",
+    "eslint-plugin-sonarjs": "^4.2.2",
+    "eslint-plugin-unicorn": "^79.0.0",
     "globals": "^17.7.0",
     "typescript-eslint": "^8.62.0"
   },

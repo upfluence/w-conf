@@ -1,0 +1,1649 @@
+{
+  "profiles": {
+    "base-js": [
+      {
+        "configuration": "default",
+        "file": "app/components/foo.js"
+      },
+      {
+        "configuration": "default",
+        "file": "addon/components/foo.js"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/app/components/foo.js"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/addon/components/foo.js"
+      }
+    ],
+    "base-ts": [
+      {
+        "configuration": "default",
+        "file": "app/components/foo.ts"
+      },
+      {
+        "configuration": "default",
+        "file": "addon/components/foo.ts"
+      },
+      {
+        "configuration": "default",
+        "file": "tests/test-helper.ts"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/app/components/foo.ts"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/addon/components/foo.ts"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/tests/test-helper.ts"
+      }
+    ],
+    "qunit-js": [
+      {
+        "configuration": "default",
+        "file": "tests/unit/components/foo-test.js"
+      },
+      {
+        "configuration": "default",
+        "file": "tests/integration/components/foo-test.js"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/tests/integration/components/foo-test.js"
+      }
+    ],
+    "qunit-ts": [
+      {
+        "configuration": "default",
+        "file": "tests/unit/components/foo-test.ts"
+      },
+      {
+        "configuration": "default",
+        "file": "tests/integration/components/foo-test.ts"
+      },
+      {
+        "configuration": "default",
+        "file": "tests/acceptance/foo-test.ts"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/tests/integration/components/foo-test.ts"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/tests/acceptance/foo-test.ts"
+      }
+    ],
+    "node-js": [
+      {
+        "configuration": "default",
+        "file": "ember-cli-build.js"
+      },
+      {
+        "configuration": "default",
+        "file": "tests/dummy/config/environment.js"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/ember-cli-build.js"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/scripts/foo.js"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/tests/dummy/config/environment.js"
+      }
+    ],
+    "node-cjs": [
+      {
+        "configuration": "default",
+        "file": "scripts/foo.cjs"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/scripts/foo.cjs"
+      }
+    ],
+    "node-mjs": [
+      {
+        "configuration": "default",
+        "file": "eslint.config.mjs"
+      },
+      {
+        "configuration": "default",
+        "file": "prettier.config.mjs"
+      },
+      {
+        "configuration": "monorepo",
+        "file": "packages/example/scripts/foo.mjs"
+      }
+    ]
+  },
+  "rules": {
+    "@typescript-eslint/array-type": [
+      {
+        "config": [
+          "error",
+          {
+            "default": "array"
+          }
+        ],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": [
+      {
+        "config": [
+          "error",
+          {
+            "minimumDescriptionLength": 10,
+            "ts-check": false,
+            "ts-expect-error": "allow-with-description",
+            "ts-ignore": true,
+            "ts-nocheck": true
+          }
+        ],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/consistent-type-assertions": [
+      {
+        "config": [
+          "error",
+          {
+            "assertionStyle": "as"
+          }
+        ],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-array-constructor": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-duplicate-enum-values": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-empty-object-type": [
+      {
+        "config": [
+          "error",
+          {
+            "allowInterfaces": "always"
+          }
+        ],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-extra-non-null-assertion": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-misused-new": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-namespace": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-non-null-asserted-optional-chain": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-require-imports": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-this-alias": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-unnecessary-type-constraint": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-unsafe-declaration-merging": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-unsafe-function-type": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-unused-expressions": [
+      {
+        "config": [
+          "error",
+          {
+            "allowShortCircuit": false,
+            "allowTaggedTemplates": false,
+            "allowTernary": false
+          }
+        ],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      {
+        "config": [
+          "error",
+          {
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/no-wrapper-object-types": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/prefer-as-const": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/prefer-namespace-keyword": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "@typescript-eslint/triple-slash-reference": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "arrow-body-style": [
+      {
+        "config": ["error", "as-needed"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "constructor-super": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "curly": [
+      {
+        "config": ["error", "multi"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "dot-notation": [
+      {
+        "config": [
+          "error",
+          {
+            "allowKeywords": true,
+            "allowPattern": ""
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "ember/avoid-using-needs-in-controllers": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/classic-decorator-hooks": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/jquery-ember-run": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/new-module-imports": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-arrow-function-computed-properties": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-at-ember-render-modifiers": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-attrs-in-components": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-attrs-snapshot": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-capital-letters-in-routes": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-deeply-nested-dependent-keys-with-each": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-deprecated-router-transition-methods": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-duplicate-dependent-keys": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-ember-super-in-es-classes": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-ember-testing-in-module-scope": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-function-prototype-extensions": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-get-with-default": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-implicit-injections": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-incorrect-calls-with-inline-anonymous-functions": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-incorrect-computed-macros": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-invalid-debug-function-arguments": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-invalid-dependent-keys": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-invalid-test-waiters": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-legacy-test-waiters": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-noop-setup-on-error-in-before": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-old-shims": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-on-calls-in-components": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-pause-test": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-private-routing-service": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-restricted-resolver-tests": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-shadow-route-definition": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-side-effects": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-string-prototype-extensions": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-test-and-then": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-test-import-export": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-test-module-for": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-test-support-import": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-test-this-render": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-tracked-properties-from-args": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-try-invoke": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-unnecessary-route-path-option": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/no-volatile-computed-properties": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/prefer-ember-test-helpers": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/require-computed-macros": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/require-computed-property-dependencies": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/require-return-from-computed": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/require-super-in-lifecycle-hooks": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/require-valid-css-selector-in-test-helpers": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/routes-segments-snake-case": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "ember/use-brace-expansion": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js"]
+      }
+    ],
+    "eqeqeq": [
+      {
+        "config": ["error", "always"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "for-direction": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "getter-return": [
+      {
+        "config": [
+          "error",
+          {
+            "allowImplicit": false
+          }
+        ],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/hashbang": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-deprecated-api": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-exports-assign": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-extraneous-import": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-extraneous-require": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-missing-import": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-missing-require": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-process-exit": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-unpublished-import": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-unpublished-require": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-unsupported-features/es-builtins": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/no-unsupported-features/es-syntax": [
+      {
+        "config": [
+          "error",
+          {
+            "ignores": []
+          }
+        ],
+        "profiles": ["node-js", "node-cjs"]
+      },
+      {
+        "config": [
+          "error",
+          {
+            "ignores": ["modules"]
+          }
+        ],
+        "profiles": ["node-mjs"]
+      }
+    ],
+    "n/no-unsupported-features/node-builtins": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "n/process-exit-as-throw": [
+      {
+        "config": ["error"],
+        "profiles": ["node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-array-constructor": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-async-promise-executor": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-case-declarations": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-class-assign": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-compare-neg-zero": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-cond-assign": [
+      {
+        "config": ["error", "except-parens"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-const-assign": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-constant-binary-expression": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-constant-condition": [
+      {
+        "config": [
+          "error",
+          {
+            "checkLoops": "allExceptWhileTrue"
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-control-regex": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-debugger": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-delete-var": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-dupe-args": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-dupe-class-members": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-dupe-else-if": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-dupe-keys": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-duplicate-case": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-else-return": [
+      {
+        "config": [
+          "error",
+          {
+            "allowElseIf": true
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-empty": [
+      {
+        "config": [
+          "error",
+          {
+            "allowEmptyCatch": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-empty-character-class": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-empty-pattern": [
+      {
+        "config": [
+          "error",
+          {
+            "allowObjectPatternsAsParameters": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-empty-static-block": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-ex-assign": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-extra-boolean-cast": [
+      {
+        "config": ["error", {}],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-fallthrough": [
+      {
+        "config": [
+          "error",
+          {
+            "allowEmptyCase": false,
+            "reportUnusedFallthroughComment": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-func-assign": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-global-assign": [
+      {
+        "config": [
+          "error",
+          {
+            "exceptions": []
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-import-assign": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-invalid-regexp": [
+      {
+        "config": ["error", {}],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-irregular-whitespace": [
+      {
+        "config": [
+          "error",
+          {
+            "skipComments": false,
+            "skipJSXText": false,
+            "skipRegExps": false,
+            "skipStrings": true,
+            "skipTemplates": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-lonely-if": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-loss-of-precision": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-misleading-character-class": [
+      {
+        "config": [
+          "error",
+          {
+            "allowEscape": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-new-native-nonconstructor": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-nonoctal-decimal-escape": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-obj-calls": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-octal": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-prototype-builtins": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-redeclare": [
+      {
+        "config": [
+          "error",
+          {
+            "builtinGlobals": true
+          }
+        ],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-regex-spaces": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-self-assign": [
+      {
+        "config": [
+          "error",
+          {
+            "props": true
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-setter-return": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-shadow-restricted-names": [
+      {
+        "config": [
+          "error",
+          {
+            "reportGlobalThis": true
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-sparse-arrays": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-this-before-super": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unassigned-vars": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-undef": [
+      {
+        "config": [
+          "error",
+          {
+            "typeof": false
+          }
+        ],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unneeded-ternary": [
+      {
+        "config": [
+          "error",
+          {
+            "defaultAssignment": true
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unreachable": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unsafe-finally": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unsafe-negation": [
+      {
+        "config": [
+          "error",
+          {
+            "enforceForOrderingRelations": false
+          }
+        ],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unsafe-optional-chaining": [
+      {
+        "config": [
+          "error",
+          {
+            "disallowArithmeticOperators": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unused-labels": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unused-private-class-members": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-unused-vars": [
+      {
+        "config": [
+          "error",
+          {
+            "args": "after-used",
+            "caughtErrors": "all",
+            "ignoreClassWithStaticInitBlock": false,
+            "ignoreRestSiblings": false,
+            "ignoreUsingDeclarations": false,
+            "reportUsedIgnorePattern": false,
+            "vars": "all"
+          }
+        ],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-useless-assignment": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-useless-backreference": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-useless-catch": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-useless-escape": [
+      {
+        "config": [
+          "error",
+          {
+            "allowRegexCharacters": []
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-var": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "no-with": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "qunit-js", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "object-shorthand": [
+      {
+        "config": ["error", "properties"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "prefer-const": [
+      {
+        "config": [
+          "error",
+          {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "prefer-rest-params": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "prefer-spread": [
+      {
+        "config": ["error"],
+        "profiles": ["base-ts", "qunit-ts"]
+      }
+    ],
+    "prefer-template": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "preserve-caught-error": [
+      {
+        "config": [
+          "error",
+          {
+            "requireCatchParameter": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "qunit/assert-args": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/literal-compare-order": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-assert-equal": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-assert-equal-boolean": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-assert-logical-expression": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-async-in-loops": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-async-module-callbacks": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-async-test": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-commented-tests": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-compare-relation-boolean": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-conditional-assertions": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-early-return": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-global-assertions": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-global-expect": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-global-module-test": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-global-stop-start": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-hooks-from-ancestor-modules": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-identical-names": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-init": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-jsdump": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-negated-ok": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-nested-tests": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-ok-equality": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-only": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-qunit-push": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-qunit-start-in-tests": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-qunit-stop": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-reassign-log-callbacks": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-reset": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-setup-teardown": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-test-expect-argument": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/no-throws-string": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/require-expect": [
+      {
+        "config": ["error", "except-simple"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/require-object-in-propequal": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "qunit/resolve-async": [
+      {
+        "config": ["error"],
+        "profiles": ["qunit-js", "qunit-ts"]
+      }
+    ],
+    "require-yield": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "sonarjs/prefer-immediate-return": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/name-replacements": [
+      {
+        "config": [
+          "error",
+          {
+            "checkFilenames": false,
+            "replacements": {
+              "application": false,
+              "applications": false,
+              "args": false,
+              "config": false,
+              "configs": false,
+              "configuration": false,
+              "param": false,
+              "params": false
+            }
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/numeric-separators-style": [
+      {
+        "config": [
+          "error",
+          {
+            "binary": {
+              "groupLength": 4,
+              "minimumDigits": 0
+            },
+            "hexadecimal": {
+              "groupLength": 2,
+              "minimumDigits": 0
+            },
+            "number": {
+              "fractionGroupLength": "Infinity",
+              "groupLength": 3,
+              "minimumDigits": 5
+            },
+            "octal": {
+              "groupLength": 4,
+              "minimumDigits": 0
+            },
+            "onlyIfContainsSeparator": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-array-find": [
+      {
+        "config": [
+          "error",
+          {
+            "checkFromLast": true
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-array-flat": [
+      {
+        "config": [
+          "error",
+          {
+            "functions": []
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-array-flat-map": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-date-now": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-early-return": [
+      {
+        "config": [
+          "error",
+          {
+            "checkShortBodies": false,
+            "maximumStatements": 1
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-math-min-max": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-modern-dom-apis": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-modern-math-apis": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-negative-index": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-regexp-test": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-set-size": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-string-starts-ends-with": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-string-trim-start-end": [
+      {
+        "config": ["error"],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "unicorn/prefer-ternary": [
+      {
+        "config": [
+          "error",
+          "always",
+          {
+            "checkComputedMemberAccess": false,
+            "checkVaryingBase": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "use-isnan": [
+      {
+        "config": [
+          "error",
+          {
+            "enforceForIndexOf": false,
+            "enforceForSwitchCase": true
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ],
+    "valid-typeof": [
+      {
+        "config": [
+          "error",
+          {
+            "requireStringLiterals": false
+          }
+        ],
+        "profiles": ["base-js", "base-ts", "qunit-js", "qunit-ts", "node-js", "node-cjs", "node-mjs"]
+      }
+    ]
+  }
+}

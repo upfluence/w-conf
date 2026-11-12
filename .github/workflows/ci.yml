@@ -10,13 +10,31 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 permissions:
   contents: read
   packages: write
 
 jobs:
+  eslint-config:
+    name: ESLint Config
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '${{ env.NODE_VERSION }}'
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Test ESLint Config
+        run: pnpm test
+
   web-baseline:
     name: Web Baseline Coverage
     runs-on: ubuntu-24.04

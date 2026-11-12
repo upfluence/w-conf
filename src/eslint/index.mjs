@@ -15,10 +15,12 @@
  *   export default upfluence;
  */
 import js from '@eslint/js';
-import eslintConfigPrettierPlaceLast from 'eslint-config-prettier';
+import eslintConfigPrettier from 'eslint-config-prettier';
 import ember from 'eslint-plugin-ember/recommended';
 import n from 'eslint-plugin-n';
 import qunit from 'eslint-plugin-qunit';
+import sonarjs from 'eslint-plugin-sonarjs';
+import unicorn from 'eslint-plugin-unicorn';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -118,6 +120,67 @@ export const core = /** @type {ESLintConfigElement[]} */ ([
 ]);
 
 /*
+ * Code-quality rules shared by JS and TS files.
+ * All are auto-fixable except `unicorn/prefer-math-min-max` (suggestions only)
+ * and most `eqeqeq` reports (only fixed when both sides are provably the same type).
+ */
+export const codeQuality = /** @type {ESLintConfigElement[]} */ ([
+  {
+    name: 'upfluence/code-quality',
+    plugins: { sonarjs, unicorn },
+    rules: {
+      'arrow-body-style': ['error', 'as-needed'],
+      curly: ['error', 'multi'],
+      'dot-notation': 'error',
+      eqeqeq: 'error',
+      'no-array-constructor': 'error',
+      'no-else-return': 'error',
+      'no-lonely-if': 'error',
+      'no-unneeded-ternary': 'error',
+      'no-var': 'error',
+      'object-shorthand': ['error', 'properties'],
+      'prefer-const': 'error',
+      'prefer-template': 'error',
+      'sonarjs/prefer-immediate-return': 'error',
+      // File names are resolver lookups in Ember: never rename them.
+      // `args` is the Glimmer component API, `application`/`configuration` appear in
+      // Ember names (ApplicationAdapter, setupApplicationTest): keep them.
+      'unicorn/name-replacements': [
+        'error',
+        {
+          checkFilenames: false,
+          replacements: {
+            application: false,
+            applications: false,
+            args: false,
+            config: false,
+            configs: false,
+            configuration: false,
+            param: false,
+            params: false
+          }
+        }
+      ],
+      'unicorn/numeric-separators-style': 'error',
+      'unicorn/prefer-array-find': 'error',
+      'unicorn/prefer-array-flat': 'error',
+      'unicorn/prefer-array-flat-map': 'error',
+      'unicorn/prefer-date-now': 'error',
+      'unicorn/prefer-early-return': 'error',
+      'unicorn/prefer-math-min-max': 'error',
+      'unicorn/prefer-modern-dom-apis': 'error',
+      'unicorn/prefer-modern-math-apis': 'error',
+      'unicorn/prefer-negative-index': 'error',
+      'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-set-size': 'error',
+      'unicorn/prefer-string-starts-ends-with': 'error',
+      'unicorn/prefer-string-trim-start-end': 'error',
+      'unicorn/prefer-ternary': 'error'
+    }
+  }
+]);
+
+/*
  * Ember recommended with the compatibility disables.
  */
 export const emberConfig = /** @type {ESLintConfigElement[]} */ ([
@@ -154,6 +217,8 @@ export const typescript = /** @type {ESLintConfigElement[]} */ ([
     extends: [...tseslint.configs.recommended],
     rules: {
       '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'always' }],
+      '@typescript-eslint/array-type': ['error', { default: 'array' }],
+      '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'as' }],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/ban-ts-comment': [
@@ -241,8 +306,15 @@ export const nodeFiles = (files = DEFAULT_NODE_FILES) => {
 
 /*
  * Re-export prettier so consumers always place it correctly (last).
+ * `curly` is kept out: eslint-config-prettier turns it off, but `curly: multi`
+ * does not conflict with Prettier (only `multi-line` / `multi-or-nest` do).
  */
-export { eslintConfigPrettierPlaceLast };
+const { curly: _prettierCurly, ...prettierRules } = eslintConfigPrettier.rules ?? {};
+export const eslintConfigPrettierPlaceLast = /** @type {ESLintConfigElement} */ ({
+  ...eslintConfigPrettier,
+  name: 'upfluence/prettier',
+  rules: prettierRules
+});
 
 /*
  * Sensible default ignores (node_modules is ignored by ESLint by default).
@@ -275,6 +347,7 @@ export const DEFAULT_IGNORES = [
  *  - Ignore patterns — {@link DEFAULT_IGNORES} plus custom `options.ignores`
  *  - Linter meta-options (`reportUnusedDisableDirectives`, `reportUnusedInlineConfigs`)
  *  - `eslint:recommended` core rules — {@link core}
+ *  - Code-quality rules (core, `unicorn`, `sonarjs`) — {@link codeQuality}
  *  - `eslint-plugin-ember` recommended + {@link emberCompatibilityDisables} — {@link emberConfig}
  *  - JavaScript files (TypeScript parser, browser globals) — {@link javascript}
  *  - TypeScript files (`typescript-eslint` recommended, untyped) — {@link typescript}
@@ -340,13 +413,14 @@ export function buildConfiguration(options = {}, ...extraESLintConfigs) {
       }
     },
     ...core,
+    ...codeQuality,
     ...emberConfig,
     ...javascript,
     ...typescript,
     ...qunitTests(testFilesOrFallback),
     ...nodeFiles(nodeFilesOrFallback),
     ...extraESLintConfigs,
-    { ...eslintConfigPrettierPlaceLast, name: 'upfluence/prettier' }
+    eslintConfigPrettierPlaceLast
   );
 }
 
