@@ -29,7 +29,7 @@
     "web-baseline:test": "node tests/web-baseline/coverage-test.mjs",
     "format": "prettier --write ./{src,tests,scripts}/**/*",
     "format:check": "prettier --check --ignore-unknown ./{src,tests,scripts}/**/*",
-    "test": "node --experimental-strip-types --test tests/eslint/"
+    "test": "node --experimental-strip-types --test tests/eslint/*.ts"
   },
   "devDependencies": {
     "@google-analytics/data": "^7.0.0",
