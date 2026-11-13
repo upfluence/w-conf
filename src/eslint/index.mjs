@@ -156,8 +156,20 @@ export const codeQuality = /** @type {ESLintConfigElement[]} */ ([
             config: false,
             configs: false,
             configuration: false,
+            ctx: false,
+            elem: false,
+            i: false,
+            id: false,
+            ids: false,
+            init: false,
+            j: false,
             param: false,
-            params: false
+            params: false,
+            queryParams: false,
+            uuid: false,
+            uuids: false,
+            x: false,
+            y: false,
           }
         }
       ],
