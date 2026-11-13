@@ -10,7 +10,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NODE_VERSION: '22'
+  NODE_VERSION: ${{ vars.NODE_VERSION }}
 
 permissions:
   contents: read
