@@ -14,8 +14,8 @@ You can extend your project's configuration files with the shared configurations
 
 ### TypeScript
 
-The package provides a shared strictness baseline and Node and Ember presets.
-They require TypeScript 5.9 or newer.
+The package exports three TypeScript configurations: a shared baseline, plus
+Node and Ember presets. They require TypeScript 5.9 or newer.
 
 Extend the preset that matches the project environment:
 
@@ -31,13 +31,23 @@ Extend the preset that matches the project environment:
 }
 ```
 
-Both presets extend `base.json`, which enables strict checking, unused-code
-checks, `noImplicitOverride`, and `erasableSyntaxOnly`. The Node preset uses
-`NodeNext` module semantics; the Ember preset enables legacy decorators and
-disables TypeScript emission by default. Keep project-specific settings such as
-`target`, `moduleResolution`, `paths`, `include`, and declaration output in the
-project's own `tsconfig.json`. Ember packages that emit declarations can
-override `noEmit` and `noEmitOnError`.
+The exported configurations are:
+
+- `base.json` provides strict checking, JavaScript checking, unused-code and
+  control-flow checks, `noImplicitOverride`, and `erasableSyntaxOnly`. It also
+  sets `target` to `ESNext`, enables `isolatedModules` and
+  `verbatimModuleSyntax`, resolves JSON modules, and sets `noEmit`.
+- `node.json` extends `base.json` with `NodeNext` module and module-resolution
+  settings and the Node.js type definitions.
+- `ember.json` extends both `base.json` and `@ember/app-tsconfig`, and sets the
+  Ember type definitions (`ember-source/types`). The Ember preset therefore
+  requires `@ember/app-tsconfig` to be resolvable in the consuming project.
+
+Projects that need only the shared baseline can extend
+`@upfluence/w-conf/tsconfig/base.json` directly. Keep project-specific settings
+such as `target`, `moduleResolution`, `paths`, and `include` in the project's
+own `tsconfig.json`. Override `noEmit` there when the project needs TypeScript
+to emit files, such as declarations.
 
 `erasableSyntaxOnly` rejects TypeScript syntax that requires runtime
 transformation, including enums, constructor parameter properties, and
