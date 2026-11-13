@@ -151,6 +151,8 @@ A shared flat ESLint config (ESLint ≥ 10) for Upfluence Ember apps/addons.
 It includes:
 
 - `eslint:recommended`
+- code-quality rules (`codeQuality`): core rules plus `eslint-plugin-unicorn` and
+  `eslint-plugin-sonarjs` picks, mostly auto-fixable
 - `eslint-plugin-ember` (+ `emberCompatibilityDisables`)
 - `typescript-eslint` (`recommended`, untyped)
 - `eslint-plugin-qunit` for tests
@@ -163,6 +165,8 @@ References:
 - [`audit.md`](https://linear.app/upfluence/issue/CD-249/w-conf-package-ships-with-a-shared-eslint-config-projectsaddons-can#comment-74f1dbec)
 
 #### Requirements
+
+Node ≥ 22.13 (required by `eslint-plugin-unicorn`).
 
 The ESLint export bundles its plugins and presets as package dependencies.
 In consumer repositories, the minimal install is:
@@ -236,6 +240,7 @@ For advanced composition (monorepos, custom blocks), use named exports and keep
 import { defineConfig } from 'eslint/config';
 import {
   core,
+  codeQuality,
   emberConfig,
   javascript,
   typescript,
@@ -248,6 +253,7 @@ import {
 export default defineConfig(
   ...DEFAULT_IGNORES,
   ...core,
+  ...codeQuality,
   ...emberConfig,
   ...javascript,
   ...typescript,
